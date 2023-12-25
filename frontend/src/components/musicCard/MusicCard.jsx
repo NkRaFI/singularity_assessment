@@ -11,6 +11,7 @@ const MusicCard = ({ music }) => {
                     src={music.cover_image}
                     className='w-100'
                     alt=""
+                    loading="lazy"
                 />
                 <div className='position-absolute bottom-0 start-0 w-100 d-flex justify-content-end pe-2 pb-2 placeholder-wave'>
                     <Link

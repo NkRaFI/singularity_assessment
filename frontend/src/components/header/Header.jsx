@@ -72,7 +72,7 @@ const Header = () => {
                                         type="search"
                                         {...register("query", { required: true })}
                                         className="form-control py-2 px-3 py-md-3 px-md-4 border-0 border-start border-top border-bottom border-danger-subtle rounded-start-pill focus-ring focus-ring-danger"
-                                        placeholder="Search by title"
+                                        placeholder="Search by title i.e: Shubhaarambh"
                                         style={{"--bs-focus-ring-color": "transparent"}}
                                     />
                                     <button
