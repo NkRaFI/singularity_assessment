@@ -2,9 +2,9 @@ import { apiSlice } from "../api/apiSlice";
 
 
 export const musicSlice = apiSlice.injectEndpoints({
-    endpoints: (builder) => ({
+    endpoints: (builder)=> ({
         searchMusic: builder.mutation({
-            query: ({ query }) => ({
+            query: ({ query })=> ({
                 url: `/music/search?${query ? `query=${query}` : ""}`,
                 method: "GET"
             })
