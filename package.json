@@ -4,14 +4,23 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server.js",
+    "server": "nodemon backend/server.js",
+    "client": "npm run dev --prefix frontend",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "Nasur Ullah Khan",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.18.2"
+    "axios": "^1.6.2",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-async-errors": "^3.1.1",
+    "mongoose": "^8.0.3"
   },
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "nodemon": "^3.0.2"
   }
 }
