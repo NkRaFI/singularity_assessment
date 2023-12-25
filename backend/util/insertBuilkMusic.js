@@ -1,5 +1,6 @@
 const fs = require('fs').promises;
 const path = require('path')
+const MusicModel = require("../models/MusicModel")
 
 const insertMusics = async () => {
     try {
