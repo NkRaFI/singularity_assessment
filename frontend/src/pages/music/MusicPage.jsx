@@ -1,60 +1,71 @@
 
-import { useEffect } from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useCallback, useEffect } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { useSearchMusicMutation } from '../../features/music/musicSlice';
-import { PiUserCircleLight } from "react-icons/pi";
-import { BsMusicNoteList } from "react-icons/bs";
+import MusicCard from '../../components/musicCard/MusicCard';
+import ShimmerCard from '../../components/shimmerCard/ShimmerCard';
 
 const MusicPage = () => {
     /**-React Router-**/
     const { pathname } = useLocation()
+    const [searchParams] = useSearchParams()
 
     /**-RTK-**/
     //mutations
-    const [searchMusic, { data: musics }] = useSearchMusicMutation()
+    const [searchMusic, { data: musics, isLoading: musicsLoading }] = useSearchMusicMutation()
 
+    const query = searchParams.get("query")
+    console.log(query)
+    /**-useEffect-**/
     useEffect(() => {
-        searchMusic({ query: "" })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
-    }, [pathname, searchMusic])
+        if (query) {
+            searchMusic({ query: query })
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        } else {
+            searchMusic({ query: "" })
+                .then(res => console.log(res))
+                .catch(err => console.log(err))
+        }
+    }, [pathname, query, searchMusic])
+
+    /**-Loading Screen-**/
+    const card = useCallback(() => {
+        return (
+            <div className="container my-lg-4">
+                <div className="row g-3">
+                    {
+                        [...Array(20).keys()].map(i => (
+                            <div key={i} className="col-12 col-md-4 col-lg-3">
+                                <ShimmerCard height='250px' />
+                            </div>
+                        ))
+                    }
+                </div>
+            </div>
+        )
+    }, [])
+
+
+    if (musicsLoading) {
+        return card()
+    }
 
     return (
-        <section className='container my-4'>
+        <section className='container my-lg-4'>
             <div className="row g-4">
+                <div className="col-12">
+                    {
+                        query && <h4 className='fw-semibold pt-3'>Results for: {query}</h4>
+                    }
+                </div>
                 {
                     musics?.data?.map(music => (
                         <div
                             key={music._id}
-                            className="col-md-4 col-lg-3"
+                            className="col-12 col-md-4 col-lg-3"
                         >
-                            <div>
-                                <div className="position-relative rounded overflow-hidden">
-                                    <img
-                                        src={music.cover_image}
-                                        className='w-100'
-                                        alt=""
-                                    />
-                                    <Link
-                                    to={`/music/play/${music._id}`}
-                                        className='nav-link position-absolute bottom-0 start-0 w-100 d-flex justify-content-end pe-2 pb-2'
-                                    >
-                                        <p className='px-3 py-2 bg-danger text-white m-0 d-flex gap-1 rounded-pill align-items-center border small cursor-pointer'>
-                                            <BsMusicNoteList className='fs-6' />
-                                            <span style={{ letterSpacing: "0.8px" }}>Play</span>
-                                        </p>
-                                    </Link>
-                                </div>
-                                <div className='py-2 px-1 d-flex flex-column gap-2'>
-                                    <p className='fw-semibold text-primary-emphasis m-0'>{music.title}</p>
-                                    <div className='d-flex gap-1 align-items-center'>
-                                        <PiUserCircleLight
-                                            className='fs-4 text-danger'
-                                        />
-                                        <span className='small'>{music.artist}</span>
-                                    </div>
-                                </div>
-                            </div>
+                            <MusicCard music={music} />
                         </div>
                     ))
                 }

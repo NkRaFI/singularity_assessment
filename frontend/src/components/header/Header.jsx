@@ -2,12 +2,15 @@ import "./Header.css"
 import { RiSearchLine } from "react-icons/ri";
 import { LuListMusic } from "react-icons/lu";
 import Dropdown from "../dropdown/Dropdown";
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import { useForm } from 'react-hook-form';
 import { useSearchMusicMutation } from "../../features/music/musicSlice";
 import { useEffect, useState } from "react";
 
 const Header = () => {
+    /**-React Router-**/
+    const setSearchParams = useSearchParams()[1]
+    
     /**-React Hooks-**/
     const [showDropdown, setShowDropdown] = useState(false)
 
@@ -40,7 +43,7 @@ const Header = () => {
 
     /**-Event Handlers-**/
     const handleSearchInputSubmit = async (data) => {
-        console.log(data)
+        setSearchParams(data)
     }
 
     return (
@@ -54,7 +57,7 @@ const Header = () => {
                             />
                         </Link>
                     </div>
-                    <div className="col-12 col-md-8 col-lg-6">
+                    <div className="col-10 col-md-8 col-lg-6">
                         <Dropdown
                             firstElement={
                                 <form
@@ -68,13 +71,14 @@ const Header = () => {
                                     <input
                                         type="search"
                                         {...register("query", { required: true })}
-                                        className="form-control py-3 px-4 border-0 border-start border-top border-bottom border-danger-subtle rounded-start-pill focus-ring focus-ring-danger"
+                                        className="form-control py-2 px-3 py-md-3 px-md-4 border-0 border-start border-top border-bottom border-danger-subtle rounded-start-pill focus-ring focus-ring-danger"
                                         placeholder="Search by title"
+                                        style={{"--bs-focus-ring-color": "transparent"}}
                                     />
                                     <button
                                         className="btn h-100 rounded-end-pill border-0 border-top border-end border-bottom border-danger-subtle rounded-0 pe-3 pb-2"
                                     >
-                                        <RiSearchLine className="fs-3 text-danger" />
+                                        <RiSearchLine className="fs-5 fs-md-3 text-danger" />
                                     </button>
                                 </form>
                             }

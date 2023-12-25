@@ -2,7 +2,12 @@
 
 body {
   font-family: 'Manrope', sans-serif;
+  scroll-behavior: smooth;
 }
 .cursor-pointer{
   cursor: pointer;
+}
+
+input:focus{
+  background-color: rgb(255, 247, 247) !important;
 }
