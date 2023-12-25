@@ -1,9 +1,48 @@
+import "./Header.css"
 import { RiSearchLine } from "react-icons/ri";
 import { LuListMusic } from "react-icons/lu";
 import Dropdown from "../dropdown/Dropdown";
 import { Link } from "react-router-dom"
+import { useForm } from 'react-hook-form';
+import { useSearchMusicMutation } from "../../features/music/musicSlice";
+import { useEffect, useState } from "react";
 
 const Header = () => {
+    /**-React Hooks-**/
+    const [showDropdown, setShowDropdown] = useState(false)
+
+    /**-RTK-**/
+    //mutations
+    const [searchMusic, { data: musics }] = useSearchMusicMutation()
+
+    /**-Hook Form-**/
+    const { register, handleSubmit, watch } = useForm()
+    const searchTerm = watch("query") || ""
+
+    /**-useEffects-**/
+    useEffect(() => {
+        let timer
+        if (searchTerm.length) {
+            timer = setTimeout(() => {
+                searchMusic({ query: searchTerm })
+                    .then(({ data: musics }) => {
+                        if (musics.data.length) {
+                            setShowDropdown(true)
+                        }
+                    })
+                    .catch(error => console.log(error))
+            }, 1000)
+        }
+
+        return () => clearTimeout(timer)
+
+    }, [searchTerm, searchMusic])
+
+    /**-Event Handlers-**/
+    const handleSearchInputSubmit = async (data) => {
+        console.log(data)
+    }
+
     return (
         <div className="border-bottom p-2">
             <div className="container">
@@ -18,7 +57,9 @@ const Header = () => {
                     <div className="col-12 col-md-8 col-lg-6">
                         <Dropdown
                             firstElement={
-                                <div className="position-relative"
+                                <form
+                                    onSubmit={handleSubmit(handleSearchInputSubmit)}
+                                    className="position-relative"
                                     style={{
                                         display: "grid",
                                         gridTemplateColumns: "1fr auto"
@@ -26,8 +67,8 @@ const Header = () => {
                                 >
                                     <input
                                         type="search"
+                                        {...register("query", { required: true })}
                                         className="form-control py-3 px-4 border-0 border-start border-top border-bottom border-danger-subtle rounded-start-pill focus-ring focus-ring-danger"
-
                                         placeholder="Search by title"
                                     />
                                     <button
@@ -35,11 +76,32 @@ const Header = () => {
                                     >
                                         <RiSearchLine className="fs-3 text-danger" />
                                     </button>
-                                </div>
+                                </form>
                             }
-                            showDropdown={false}
+                            showDropdown={showDropdown}
+                            setShowDropdown={setShowDropdown}
                         >
-                            <p>Hello</p>
+                            <div className="search-result-card p-2">
+                                {
+                                    musics?.data?.map(music => (
+                                        <Link
+                                            key={music._id}
+                                            to={`/music/play/${music._id}`}
+                                            className="nav-link rounded cursor-pointer d-flex gap-2"
+                                        >
+                                            <img
+                                                src={music.cover_image}
+                                                alt=""
+                                                className="rounded"
+                                                style={{
+                                                    width: "30px",
+                                                }}
+                                            />
+                                            <p className="m-0">{music.title}</p>
+                                        </Link>
+                                    ))
+                                }
+                            </div>
                         </Dropdown>
                     </div>
                 </div>

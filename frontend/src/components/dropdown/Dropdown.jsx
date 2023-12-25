@@ -9,22 +9,13 @@ const Dropdown = ({
 
     const dropdownBody = useRef()
     useEffect(() => {
-        const windowClickHandler = (e) => {
-            if (!dropdownBody?.current?.contains(e.target)) {
-                setShowDropdown(false)
-            }
-        }
-        const windowKeydownHandler = (e) => {
-            if (e.key === "Escape" && !dropdownBody?.current?.contains(e.target)) {
-                setShowDropdown(false)
-            }
+        const windowClickHandler = () => {
+            setShowDropdown(false)
         }
         window.addEventListener('click', windowClickHandler);
-        window.addEventListener('keydown', windowKeydownHandler);
 
         return () => {
             window.removeEventListener('click', windowClickHandler)
-            window.removeEventListener('keydown', windowKeydownHandler)
         }
     })
 
@@ -33,14 +24,16 @@ const Dropdown = ({
             {
                 firstElement
             }
-            <div
-                className="position-absolute"
-                style={{ top: "100%", left: "0px" }}
-            >
-                {
-                    showDropdown && children
-                }
-            </div>
+            {
+                showDropdown &&
+                <div
+                    className="position-absolute w-100 bg-white rounded border p-1 shadow"
+                    style={{ top: "102%", left: "0px", zIndex: "999" }}
+                >
+                    {children}
+                </div>
+            }
+
         </div>
     );
 };
