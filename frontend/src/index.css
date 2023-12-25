@@ -3,11 +3,13 @@
 body {
   font-family: 'Manrope', sans-serif;
   scroll-behavior: smooth;
+  background-color: rgb(255, 250, 250)
 }
-.cursor-pointer{
+
+.cursor-pointer {
   cursor: pointer;
 }
 
-input:focus{
+input:focus {
   background-color: rgb(255, 247, 247) !important;
 }
