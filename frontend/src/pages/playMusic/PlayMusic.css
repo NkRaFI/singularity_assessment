@@ -1,0 +1,6 @@
+.audio-player::-webkit-media-controls-panel {
+    background-color: #ff2339;
+}
+.audio-player{
+    width: 100%;
+}

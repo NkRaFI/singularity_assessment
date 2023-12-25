@@ -8,10 +8,15 @@ export const musicSlice = apiSlice.injectEndpoints({
                 url: `/music/search?${query ? `query=${query}` : ""}`,
                 method: "GET"
             })
+        }),
+        getMusic: builder.query({
+            query: (id)=>`/music/${id}`,
+            providesTags: ["getMusic"]
         })
     })
 })
 
 export const {
-    useSearchMusicMutation
+    useSearchMusicMutation,
+    useGetMusicQuery,
 } = musicSlice
