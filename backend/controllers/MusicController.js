@@ -23,3 +23,25 @@ exports.getMusics = async (req, res, next) => {
         next(error)
     }
 }
+
+exports.getMusic = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        if(!id){
+            throw Error("ID is not provided")
+        }
+
+        const music = await MusicModel.findById(id)
+
+        res.status(200).json(
+            {
+                message: "Music found!",
+                data: music
+            }
+        )
+        
+    } catch (error) {
+        next(err)
+    }
+}

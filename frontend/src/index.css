@@ -3,3 +3,6 @@
 body {
   font-family: 'Manrope', sans-serif;
 }
+.cursor-pointer{
+  cursor: pointer;
+}
