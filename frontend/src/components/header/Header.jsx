@@ -16,7 +16,7 @@ const Header = () => {
 
     /**-RTK-**/
     //mutations
-    const [searchMusic, { data: musics }] = useSearchMusicMutation()
+    const [searchMusic, { data: musics, isLoading: musicsLoading }] = useSearchMusicMutation()
 
     /**-Hook Form-**/
     const { register, handleSubmit, watch } = useForm()
@@ -34,7 +34,7 @@ const Header = () => {
                         }
                     })
                     .catch(error => console.log(error))
-            }, 1000)
+            }, 500)
         }
 
         return () => clearTimeout(timer)
@@ -82,16 +82,17 @@ const Header = () => {
                                     </button>
                                 </form>
                             }
+                            loading={musicsLoading}
                             showDropdown={showDropdown}
                             setShowDropdown={setShowDropdown}
                         >
-                            <div className="search-result-card p-2">
+                            <div className="p-1 d-flex flex-column gap-2 overflow-auto" style={{maxHeight: "200px"}}>
                                 {
                                     musics?.data?.map(music => (
                                         <Link
                                             key={music._id}
                                             to={`/music/play/${music._id}`}
-                                            className="nav-link rounded cursor-pointer d-flex gap-2"
+                                            className="nav-link rounded cursor-pointer d-flex gap-2 search-result-card p-2 border-bottom"
                                         >
                                             <img
                                                 src={music.cover_image}
@@ -101,7 +102,7 @@ const Header = () => {
                                                     width: "30px",
                                                 }}
                                             />
-                                            <p className="m-0">{music.title}</p>
+                                            <p className="m-0 fs-6">{music.title}</p>
                                         </Link>
                                     ))
                                 }

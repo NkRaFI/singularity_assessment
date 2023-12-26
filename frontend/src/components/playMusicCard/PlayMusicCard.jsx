@@ -31,7 +31,7 @@ const PlayMusicCard = ({ music }) => {
                     <p
                         className="fs-3 fw-bold m-0"
                     >{music?.data.title}</p>
-                    <p className="m-0 text-secondary fs-5 fw-semibold">
+                    <p className="m-0 text-secondary fs-6 fw-semibold">
                         By: {music?.data?.artist}
                     </p>
                 </div>
