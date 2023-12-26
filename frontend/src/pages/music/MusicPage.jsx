@@ -15,16 +15,16 @@ const MusicPage = () => {
     const [searchMusic, { data: musics, isLoading: musicsLoading }] = useSearchMusicMutation()
 
     const query = searchParams.get("query")
-    console.log(query)
+
     /**-useEffect-**/
     useEffect(() => {
         if (query) {
             searchMusic({ query: query })
-                .then(res => console.log(res))
+                .then()
                 .catch(err => console.log(err))
         } else {
             searchMusic({ query: "" })
-                .then(res => console.log(res))
+                .then()
                 .catch(err => console.log(err))
         }
     }, [pathname, query, searchMusic])
